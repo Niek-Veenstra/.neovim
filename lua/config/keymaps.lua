@@ -4,3 +4,4 @@
 local map = vim.keymap.set
 map("n", "<leader>RPY", ":w<CR>:TermExec cmd='python3 %'<CR>", { noremap = true, silent = true })
 map("n", "<leader>fl", ":Telescope live_grep<CR>", { noremap = true, silent = true })
+map("n", "<leader>ng", ":Neogit<CR>", { noremap = true, silent = true })
