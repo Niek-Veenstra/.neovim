@@ -1,13 +1,10 @@
 return {
   "stevearc/conform.nvim",
-  opts = {
+  lazy = true,
+  event = { "BufReadPre", "BufLeave" },
+  config = {
     formatters_by_ft = {
       php = { "php" },
-    },
-    format_on_save = {
-      lsp_fallback = true,
-      async = false,
-      timeout_ms = 500,
     },
     notify_on_error = true,
     formatters = {
@@ -15,8 +12,8 @@ return {
         command = "php-cs-fixer",
         args = {
           "fix",
+          "--config=" .. os.getenv("HOME") .. "/.config/nvim/php-cs-fixer.php",
           "$FILENAME",
-          "--config=config_filepath.php",
         },
         stdin = false,
       },
