@@ -5,6 +5,8 @@ return {
   config = {
     formatters_by_ft = {
       php = { "php" },
+      js = { "prettier" },
+      html = { "prettier" },
     },
     notify_on_error = true,
     formatters = {
