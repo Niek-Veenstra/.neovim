@@ -7,7 +7,7 @@ return {
       php = { "php" },
       js = { "prettier" },
       html = { "prettier" },
-      go = { "golines" },
+      go = { "gofumpt", "goimports_reviser", "goline" },
     },
     notify_on_error = true,
     formatters = {
