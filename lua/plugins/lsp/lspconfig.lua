@@ -141,6 +141,19 @@ return {
           },
         })
       end,
+      ["intelephense"] = function()
+        lspconfig["intelephense"].setup({
+          capabilities = capabilities,
+          filetypes = { "php", "phtml" },
+          cmd = { "gopls" },
+          root_dir = require("lspconfig.util").root_pattern("go.work", "go.mod", ".git"),
+          settings = {
+            gopls = {
+              completeUnimported = true,
+            },
+          },
+        })
+      end,
     })
   end,
 }

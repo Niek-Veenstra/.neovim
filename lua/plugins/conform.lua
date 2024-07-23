@@ -2,7 +2,7 @@ return {
   "stevearc/conform.nvim",
   lazy = true,
   event = { "BufReadPre", "BufLeave" },
-  config = {
+  opts = {
     formatters_by_ft = {
       php = { "php" },
       js = { "prettier" },
