@@ -21,7 +21,6 @@ return {
         -- Buffer local mappings.
         -- See `:help vim.lsp.*` for documentation on any of the below functions
         local opts = { buffer = ev.buf, silent = true }
-
         -- set keybinds
         opts.desc = "Show LSP references"
         keymap.set("n", "gR", "<cmd>Telescope lsp_references<CR>", opts) -- show definition, references
@@ -104,13 +103,12 @@ return {
           filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
         })
       end,
-      ["emmet_ls"] = function()
-        -- configure emmet language server
-        lspconfig["emmet_ls"].setup({
-          capabilities = capabilities,
-          filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" },
-        })
-      end,
+      -- ["emmet_ls"] = function()
+      --   lspconfig["emmet_ls"].setup({
+      --     capabilities = capabilities,
+      --     filetypes = { "html", "php", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" },
+      --   })
+      -- end,
       ["lua_ls"] = function()
         -- configure lua server (with special settings)
         lspconfig["lua_ls"].setup({
@@ -141,19 +139,27 @@ return {
           },
         })
       end,
-      ["intelephense"] = function()
-        lspconfig["intelephense"].setup({
-          capabilities = capabilities,
-          filetypes = { "php", "phtml" },
-          cmd = { "gopls" },
-          root_dir = require("lspconfig.util").root_pattern("go.work", "go.mod", ".git"),
-          settings = {
-            gopls = {
-              completeUnimported = true,
-            },
-          },
-        })
-      end,
+      -- ["intelephense"] = function()
+      --   lspconfig["intelephense"].setup({
+      --     capabilities = capabilities,
+      --     filetypes = { "php", "phtml" },
+      --     root_dir = require("lspconfig.util").root_pattern(".git"),
+      --   })
+      -- end,
+      -- ["html"] = function()
+      --   lspconfig["html"].setup({
+      --     capabilities = capabilities,
+      --     filetypes = { "php", "phtml", "html" },
+      --     root_dir = require("lspconfig.util").root_pattern(".git"),
+      --   })
+      -- end,
+      -- ["phpactor"] = function()
+      --   lspconfig["phpactor"].setup({
+      --     capabilities = capabilities,
+      --     filetypes = { "php", "phtml" },
+      --     root_dir = require("lspconfig.util").root_pattern(".git"),
+      --   })
+      -- end,
     })
   end,
 }
