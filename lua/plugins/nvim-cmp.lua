@@ -38,13 +38,21 @@ return {
         ["<C-b>"] = cmp.mapping.scroll_docs(-4),
         ["<C-f>"] = cmp.mapping.scroll_docs(4),
         ["<C-Space>"] = cmp.mapping.complete(), -- show completion suggestions
-        ["<C-e>"] = cmp.mapping.abort(), -- close completion window
-        ["<CR>"] = cmp.mapping.confirm({ select = true }),
+        ["<Space>"] = function()
+          -- Om dubbel klikken te voorkomen een spatie toevoegen voor het sluiten van suggesties.
+          local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+          local line = vim.api.nvim_get_current_line()
+          local new_line = line:sub(1, col) .. " " .. line:sub(col + 1)
+          vim.api.nvim_set_current_line(new_line)
+          vim.api.nvim_win_set_cursor(0, { row, col + 1 })
+          cmp.mapping.abort() -- close completion window
+        end,
+        ["<Tab>"] = cmp.mapping.confirm({ select = true }),
       }),
+
       -- sources for autocompletion
       sources = cmp.config.sources({
         { name = "nvim_lsp" },
-        { name = "coc" },
         { name = "luasnip" }, -- snippets
         { name = "buffer" }, -- text within current buffer
         { name = "path" }, -- file system paths

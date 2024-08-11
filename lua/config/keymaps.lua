@@ -1,31 +1,55 @@
 local map = vim.keymap.set
-local vimapi = vim.api
--- Python
-map("n", "<leader>RPY", ":w<CR>:TermExec cmd='python3 %'<CR>", { noremap = true, silent = true })
--- Telescope
-map("n", "<leader>fl", ":Telescope live_grep<CR>", { noremap = true, silent = true })
-
--- Git
-map("n", "<leader>ng", ":Neogit<CR>", { noremap = true, silent = true })
-
--- Terminal
-map("n", "<leader>ps", ":terminal powershell<CR>", { noremap = true, silent = true })
-
-local fontsize = 12
-function AdjustFontSize(amount)
-  fontsize = fontsize + amount
-  vimapi.nvim_command(":GuiFont! Consoas:h " .. fontsize)
-end
-map("n", "<C-ScrollWheelUp>", ":lua AdjustFontSize(1)<CR>", { noremap = true, silent = true })
-map("n", "<C-ScrollWheelDown>", ":lua AdjustFontSize(-1)<CR>", { noremap = true, silent = true })
-map("i", "<C-ScrollWheelUp>", "<Esc>:lua AdjustFontSize(1)<CR>", { noremap = true, silent = true })
-map("i", "<C-ScrollWheelDown>", "<Esc>:lua AdjustFontSize(-1)<CR>", { noremap = true, silent = true })
-map("n", "<leader>zsh", ":<C-w>l<CR>:term<CR>", { noremap = true, silent = true })
-
--- Set filetype for html and php workaround.
-map("n", "<leader>sfp", ":set ft=php<CR>", { noremap = true, silent = true })
-map("n", "<leader>sfh", ":set ft=html<CR>", { noremap = true, silent = true })
-
--- Set filetype for html and php workaround.
-
--- Set filetype for html and php workaround.
+map(
+  "n",
+  "<leader>RPY",
+  ":w<CR>:TermExec cmd='python3 %'<CR>",
+  { noremap = true, silent = true, desc = "Runs the current file through the python3 interpreter." }
+)
+map(
+  "n",
+  "<leader>ng",
+  ":Neogit<CR>",
+  { noremap = true, silent = true, desc = "Opens up NeoGit for the git repo in CWD." }
+)
+map(
+  "n",
+  "<leader>ztps",
+  ":terminal powershell<CR>",
+  { noremap = true, silent = true, desc = "Opens a powershell terminal." }
+)
+map(
+  "n",
+  "<leader>f",
+  ":Telescope keymaps<CR",
+  { noremap = true, silent = true, desc = "Shows all the currently registered keymaps." }
+)
+map(
+  "n",
+  "<leader>ztsh",
+  ":<C-w>l<CR>:term<CR>",
+  { noremap = true, silent = true, desc = "Opens the default terminal." }
+)
+map(
+  "n",
+  "<leader>zcd",
+  ":lua vim.lsp.buf.hover()<CR>",
+  { noremap = true, silent = true, desc = "Shows code documentation for the code highlighted at the cursor." }
+)
+map(
+  "n",
+  "<leader>sfp",
+  ":set ft=php<CR>",
+  { noremap = true, silent = true, desc = "Sets the current buffer filetype to php." }
+)
+map(
+  "n",
+  "<leader>sfh",
+  ":set ft=html<CR>",
+  { noremap = true, silent = true, desc = "Sets the current buffer filetype to html." }
+)
+local wk = require("which-key")
+local myKeymapsName = "Niek zijn keymaps"
+wk.add({
+  { "<leader>z", group = myKeymapsName, desc = "Niek zijn keymaps." },
+  { "<leader>zt", group = "Terminal launchers." },
+})

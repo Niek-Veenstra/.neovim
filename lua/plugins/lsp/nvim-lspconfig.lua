@@ -103,12 +103,12 @@ return {
           filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
         })
       end,
-      -- ["emmet_ls"] = function()
-      --   lspconfig["emmet_ls"].setup({
-      --     capabilities = capabilities,
-      --     filetypes = { "html", "php", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" },
-      --   })
-      -- end,
+      ["emmet_ls"] = function()
+        lspconfig["emmet_ls"].setup({
+          capabilities = capabilities,
+          filetypes = { "html", "php", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" },
+        })
+      end,
       ["lua_ls"] = function()
         -- configure lua server (with special settings)
         lspconfig["lua_ls"].setup({
@@ -139,20 +139,36 @@ return {
           },
         })
       end,
-      -- ["intelephense"] = function()
-      --   lspconfig["intelephense"].setup({
+      -- ["ast-grep"] = function()
+      --   lspconfig["ast-grep"].setup({
       --     capabilities = capabilities,
-      --     filetypes = { "php", "phtml" },
-      --     root_dir = require("lspconfig.util").root_pattern(".git"),
+      --     filetypes = { "go", "gomod", "gowork", "gotmpl" },
+      --     cmd = { "gopls" },
+      --     root_dir = require("lspconfig.util").root_pattern("go.work", "go.mod", ".git"),
+      --     settings = {
+      --       gopls = {
+      --         completeUnimported = true,
+      --       },
+      --     },
       --   })
       -- end,
-      -- ["html"] = function()
-      --   lspconfig["html"].setup({
-      --     capabilities = capabilities,
-      --     filetypes = { "php", "phtml", "html" },
-      --     root_dir = require("lspconfig.util").root_pattern(".git"),
-      --   })
-      -- end,
+      ["intelephense"] = function()
+        lspconfig["intelephense"].setup({
+          capabilities = capabilities,
+          filetypes = { "php", "phtml" },
+          root_dir = require("lspconfig.util").root_pattern(".git"),
+          files = {
+            associations = { "php", "phtml" },
+          },
+        })
+      end,
+      ["html"] = function()
+        lspconfig["html"].setup({
+          capabilities = capabilities,
+          filetypes = { "php", "phtml", "html" },
+          root_dir = require("lspconfig.util").root_pattern(".git"),
+        })
+      end,
       -- ["phpactor"] = function()
       --   lspconfig["phpactor"].setup({
       --     capabilities = capabilities,

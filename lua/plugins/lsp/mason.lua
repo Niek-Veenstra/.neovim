@@ -34,8 +34,7 @@ return {
         "svelte",
         "lua_ls",
         "pyright",
-        "gopls",
-        "phpactor",
+        -- "gopls",
         "intelephense",
       },
     })
