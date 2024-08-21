@@ -12,7 +12,16 @@ return {
       local dapui = require("dapui")
 
       require("dapui").setup()
-      require("dap-go").setup()
+      require("dap-go").setup({
+        dap_configurations = {
+          {
+            type = "go",
+            name = "Attach remote",
+            mode = "remote",
+            request = "attach",
+          },
+        },
+      })
 
       local map = vim.keymap.set
       map("n", "<F5>", function()

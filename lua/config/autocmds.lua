@@ -18,7 +18,9 @@ vim.api.nvim_create_autocmd({ "BufEnter", "FileType" }, {
       pattern = "*.go",
       group = "go_keybindings",
       callback = function()
-        vim.keymap.del("n", "<leader>zdn")
+        xpcall(function()
+          vim.keymap.del("n", "<leader>zdn")
+        end, function() end)
         return true
       end,
     })

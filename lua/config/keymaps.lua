@@ -20,8 +20,14 @@ map(
 map(
   "n",
   "<leader>f",
-  ":Telescope keymaps<CR",
+  ":Telescope keymaps<CR>",
   { noremap = true, silent = true, desc = "Shows all the currently registered keymaps." }
+)
+map(
+  "n",
+  "<leader>fl",
+  ":Telescope live_grep",
+  { noremap = true, silent = true, desc = "Searches through the CWD for matches in files." }
 )
 map(
   "n",

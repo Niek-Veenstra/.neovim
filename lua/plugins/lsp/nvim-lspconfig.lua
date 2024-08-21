@@ -139,19 +139,6 @@ return {
           },
         })
       end,
-      -- ["ast-grep"] = function()
-      --   lspconfig["ast-grep"].setup({
-      --     capabilities = capabilities,
-      --     filetypes = { "go", "gomod", "gowork", "gotmpl" },
-      --     cmd = { "gopls" },
-      --     root_dir = require("lspconfig.util").root_pattern("go.work", "go.mod", ".git"),
-      --     settings = {
-      --       gopls = {
-      --         completeUnimported = true,
-      --       },
-      --     },
-      --   })
-      -- end,
       ["intelephense"] = function()
         lspconfig["intelephense"].setup({
           capabilities = capabilities,
@@ -169,13 +156,13 @@ return {
           root_dir = require("lspconfig.util").root_pattern(".git"),
         })
       end,
-      -- ["phpactor"] = function()
-      --   lspconfig["phpactor"].setup({
-      --     capabilities = capabilities,
-      --     filetypes = { "php", "phtml" },
-      --     root_dir = require("lspconfig.util").root_pattern(".git"),
-      --   })
-      -- end,
+      ["clangd"] = function()
+        lspconfig["clangd"].setup({
+          capabilities = capabilities,
+          filetypes = { "h", "cpp" },
+          root_dir = require("lspconfig.util").root_pattern(".git"),
+        })
+      end,
     })
   end,
 }
