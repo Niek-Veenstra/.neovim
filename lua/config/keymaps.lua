@@ -26,7 +26,7 @@ map(
 map(
   "n",
   "<leader>fl",
-  ":Telescope live_grep",
+  ":Telescope live_grep<CR>",
   { noremap = true, silent = true, desc = "Searches through the CWD for matches in files." }
 )
 map(
@@ -56,6 +56,6 @@ map(
 local wk = require("which-key")
 local myKeymapsName = "Niek zijn keymaps"
 wk.add({
-  { "<leader>z", group = myKeymapsName, desc = "Niek zijn keymaps." },
+  { "<leader>z", group = myKeymapsName, desc = myKeymapsName .. "." },
   { "<leader>zt", group = "Terminal launchers." },
 })

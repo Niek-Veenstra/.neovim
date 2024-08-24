@@ -143,7 +143,7 @@ return {
         lspconfig["intelephense"].setup({
           capabilities = capabilities,
           filetypes = { "php", "phtml" },
-          root_dir = require("lspconfig.util").root_pattern(".git"),
+          root_dir = require("lspconfig.util").root_pattern(".git", ".exercism"),
           files = {
             associations = { "php", "phtml" },
           },

@@ -62,6 +62,21 @@ return {
       dap.listeners.before.event_exited["dapui_config"] = function()
         dapui.close()
       end
+
+      dap.adapters.php = {
+        type = "executable",
+        command = "node",
+        args = { os.getenv("home") },
+      }
+
+      dap.configurations.php = {
+        {
+          type = "php",
+          request = "launch",
+          name = "Listen for Xdebug",
+          port = 9003,
+        },
+      }
     end,
   },
 }
