@@ -10,6 +10,7 @@ return {
     opts = function()
       local dashboard = require("alpha.themes.dashboard")
       local logo = [[
+                    Niek Edition Boom.
            ██╗      █████╗ ███████╗██╗   ██╗██╗   ██╗██╗███╗   ███╗          Z
            ██║     ██╔══██╗╚══███╔╝╚██╗ ██╔╝██║   ██║██║████╗ ████║      Z    
            ██║     ███████║  ███╔╝  ╚████╔╝ ██║   ██║██║██╔████╔██║   z       

@@ -1,3 +1,6 @@
+-- Keymaps are automatically loaded on the VeryLazy event
+-- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
+-- Add any additional keymaps here
 local map = vim.keymap.set
 map(
   "n",
@@ -19,22 +22,11 @@ map(
 )
 map(
   "n",
-  "<leader>f",
-  ":Telescope keymaps<CR>",
-  { noremap = true, silent = true, desc = "Shows all the currently registered keymaps." }
-)
-map(
-  "n",
-  "<leader>fl",
-  ":Telescope live_grep<CR>",
-  { noremap = true, silent = true, desc = "Searches through the CWD for matches in files." }
-)
-map(
-  "n",
   "<leader>ztsh",
   ":<C-w>l<CR>:term<CR>",
   { noremap = true, silent = true, desc = "Opens the default terminal." }
 )
+map("t", "<Esc>", "<C-\\><C-n>", { silent = true, desc = "Closes the default terminal." })
 map(
   "n",
   "<leader>zcd",
