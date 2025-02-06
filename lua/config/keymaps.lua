@@ -4,16 +4,11 @@
 local map = vim.keymap.set
 map(
   "n",
-  "<leader>RPY",
-  ":w<CR>:TermExec cmd='python3 %'<CR>",
-  { noremap = true, silent = true, desc = "Runs the current file through the python3 interpreter." }
-)
-map(
-  "n",
   "<leader>ng",
   ":Neogit<CR>",
   { noremap = true, silent = true, desc = "Opens up NeoGit for the git repo in CWD." }
 )
+-- Terminal stuff
 map(
   "n",
   "<leader>ztps",
@@ -26,13 +21,18 @@ map(
   ":<C-w>l<CR>:term<CR>",
   { noremap = true, silent = true, desc = "Opens the default terminal." }
 )
+map("n", "<leader>fl", ":FzfLua grep", { silent = true, desc = "Opens the default terminal." })
+
 map("t", "<Esc>", "<C-\\><C-n>", { silent = true, desc = "Closes the default terminal." })
+-- End terminal
 map(
   "n",
   "<leader>zcd",
   ":lua vim.lsp.buf.hover()<CR>",
   { noremap = true, silent = true, desc = "Shows code documentation for the code highlighted at the cursor." }
 )
+
+-- Setting filetypes
 map(
   "n",
   "<leader>sfp",
@@ -45,6 +45,8 @@ map(
   ":set ft=html<CR>",
   { noremap = true, silent = true, desc = "Sets the current buffer filetype to html." }
 )
+-- End filetypes
+
 local wk = require("which-key")
 local myKeymapsName = "Niek zijn keymaps"
 wk.add({

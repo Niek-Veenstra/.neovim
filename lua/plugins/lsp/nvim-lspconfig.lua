@@ -163,6 +163,13 @@ return {
           root_dir = require("lspconfig.util").root_pattern(".git"),
         })
       end,
+      ["vhdl_ls"] = function()
+        lspconfig["vhdl_ls"].setup({
+          capabilities = capabilities,
+          filetypes = { "vhdl" },
+          root_dir = require("lspconfig.util").root_pattern("clash-manifest.json"),
+        })
+      end,
     })
   end,
 }
