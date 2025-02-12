@@ -10,7 +10,7 @@ vim.api.nvim_create_augroup("go_keybindings", { clear = true })
 vim.api.nvim_create_autocmd({ "BufEnter", "FileType" }, {
   pattern = "*.go",
   group = "go_keybindings",
-  callback = function(ev)
+  callback = function()
     vim.keymap.set(
       "n",
       "<leader>zdn",
@@ -23,6 +23,29 @@ vim.api.nvim_create_autocmd({ "BufEnter", "FileType" }, {
       callback = function()
         xpcall(function()
           vim.keymap.del("n", "<leader>zdn")
+        end, function() end)
+        return true
+      end,
+    })
+  end,
+})
+
+vim.api.nvim_create_augroup("haskell_keybindings", { clear = true })
+vim.api.nvim_create_autocmd({ "BufEnter", "FileType" }, {
+  pattern = "*.hs",
+  group = "haskell_keybindings",
+  callback = function()
+    local ht = require("haskell-tools")
+    local bufnr = vim.api.nvim_get_current_buf()
+    local opts = { noremap = true, silent = true, buffer = bufnr }
+    vim.keymap.set("n", "<leader>hs", ht.hoogle.hoogle_signature, opts)
+
+    vim.api.nvim_create_autocmd({ "BufLeave" }, {
+      pattern = "*.hs",
+      group = "haskell_keybindings",
+      callback = function()
+        xpcall(function()
+          vim.keymap.del("n", "<leader>hs")
         end, function() end)
         return true
       end,
