@@ -6,7 +6,11 @@ return {
   ---@module 'blink.cmp'
   ---@type blink.cmp.Config
   opts = {
-    keymap = { preset = "super-tab" },
+    keymap = {
+      preset = "super-tab",
+      ["<C-j>"] = { "scroll_documentation_down" },
+      ["<C-k>"] = { "scroll_documentation_up", "fallback" },
+    },
 
     appearance = {
       use_nvim_cmp_as_default = true,

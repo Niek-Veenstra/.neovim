@@ -1,6 +1,6 @@
 return {
 
-  { "nvimdev/dashboard-nvim", enabled = false },
+  { "nvimdev/dashboard-nvim",   enabled = false },
   { "echasnovski/mini.starter", enabled = false },
   {
     "goolord/alpha-nvim",
@@ -12,9 +12,9 @@ return {
       local logo = [[
                     Niek Edition Boom.
            ██╗      █████╗ ███████╗██╗   ██╗██╗   ██╗██╗███╗   ███╗          Z
-           ██║     ██╔══██╗╚══███╔╝╚██╗ ██╔╝██║   ██║██║████╗ ████║      Z    
-           ██║     ███████║  ███╔╝  ╚████╔╝ ██║   ██║██║██╔████╔██║   z       
-           ██║     ██╔══██║ ███╔╝    ╚██╔╝  ╚██╗ ██╔╝██║██║╚██╔╝██║ z         
+           ██║     ██╔══██╗╚══███╔╝╚██╗ ██╔╝██║   ██║██║████╗ ████║      Z
+           ██║     ███████║  ███╔╝  ╚████╔╝ ██║   ██║██║██╔████╔██║   z
+           ██║     ██╔══██║ ███╔╝    ╚██╔╝  ╚██╗ ██╔╝██║██║╚██╔╝██║ z
            ███████╗██║  ██║███████╗   ██║    ╚████╔╝ ██║██║ ╚═╝ ██║
            ╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝     ╚═══╝  ╚═╝╚═╝     ╚═╝
       ]]
@@ -22,17 +22,17 @@ return {
       dashboard.section.header.val = vim.split(logo, "\n")
       -- stylua: ignore
       dashboard.section.buttons.val = {
-        dashboard.button("f", " " .. " Find file",       LazyVim.pick()),
-        dashboard.button("n", " " .. " New file",        [[<cmd> ene <BAR> startinsert <cr>]]),
-        dashboard.button("r", " " .. " Recent files",    LazyVim.pick("oldfiles")),
-        dashboard.button("g", " " .. " Find text",       LazyVim.pick("live_grep")),
-        dashboard.button("c", " " .. " Config",          LazyVim.pick.config_files()),
+        dashboard.button("f", " " .. " Find file", LazyVim.pick()),
+        dashboard.button("n", " " .. " New file", [[<cmd> ene <BAR> startinsert <cr>]]),
+        dashboard.button("r", " " .. " Recent files", LazyVim.pick("oldfiles")),
+        dashboard.button("g", " " .. " Find text", LazyVim.pick("live_grep")),
+        dashboard.button("c", " " .. " Config", LazyVim.pick.config_files()),
         dashboard.button("s", " " .. " Restore Session", [[<cmd> lua require("persistence").load() <cr>]]),
-        dashboard.button("x", " " .. " Lazy Extras",     "<cmd> LazyExtras <cr>"),
-        dashboard.button("l", "󰒲 " .. " Lazy",            "<cmd> Lazy <cr>"),
-        dashboard.button("q", " " .. " Quit",            "<cmd> qa <cr>"),
-        dashboard.button(  "u","󰊳 ".. "Update property", "<cmd> Lazy update<CR>" ),
-        dashboard.button(      "d"           , " " ..           "dotfiles",            "<cmd> Telescope dotfiles<CR>"          )
+        dashboard.button("x", " " .. " Lazy Extras", "<cmd> LazyExtras <cr>"),
+        dashboard.button("l", "󰒲 " .. " Lazy", "<cmd> Lazy <cr>"),
+        dashboard.button("q", " " .. " Quit", "<cmd> qa <cr>"),
+        dashboard.button("u", "󰊳 " .. "Update property", "<cmd> Lazy update<CR>"),
+        dashboard.button("d", " " .. "dotfiles", "<cmd> Telescope dotfiles<CR>")
       }
       for _, button in ipairs(dashboard.section.buttons.val) do
         button.opts.hl = "AlphaButtons"
@@ -66,12 +66,12 @@ return {
           local stats = require("lazy").stats()
           local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
           dashboard.section.footer.val = "⚡ Neovim loaded "
-            .. stats.loaded
-            .. "/"
-            .. stats.count
-            .. " plugins in "
-            .. ms
-            .. "ms"
+              .. stats.loaded
+              .. "/"
+              .. stats.count
+              .. " plugins in "
+              .. ms
+              .. "ms"
           pcall(vim.cmd.AlphaRedraw)
         end,
       })
