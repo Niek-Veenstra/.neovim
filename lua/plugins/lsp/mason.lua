@@ -1,13 +1,8 @@
 return {
-  "williamboman/mason.nvim",
-  dependencies = {
-    "williamboman/mason-lspconfig.nvim",
-    "WhoIsSethDaniel/mason-tool-installer.nvim",
-  },
+  { "mason-org/mason.nvim", version = "1.11.0" },
   config = function()
     local mason = require("mason")
     local mason_lspconfig = require("mason-lspconfig")
-    local mason_tool_installer = require("mason-tool-installer")
 
     mason.setup({
       ui = {
@@ -26,9 +21,11 @@ return {
         "svelte",
         "lua_ls",
         "pyright",
-        "gopls",
         "clangd",
         "intelephense",
+        "ts_ls",
+        "tailwindcss",
+        "volar",
       },
       automatic_installation = {
         "html",
@@ -36,21 +33,8 @@ return {
         "svelte",
         "lua_ls",
         "pyright",
-        "gopls",
         "clangd",
         "intelephense",
-      },
-    })
-
-    mason_tool_installer.setup({
-      ensure_installed = {
-        "prettier",
-        "stylua",
-        "isort",
-        "black",
-        "pylint",
-        "eslint_d",
-        "golines",
       },
     })
   end,

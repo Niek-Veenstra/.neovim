@@ -1,8 +1,7 @@
 config = {
-  "git@github.com:neovim/nvim-lspconfig.git",
+  { "git@github.com:neovim/nvim-lspconfig.git", version = "1.32.0" },
   event = { "BufReadPre", "BufNewFile" },
   dependencies = {
-    "hrsh7th/cmp-nvim-lsp",
     { "antosha417/nvim-lsp-file-operations", config = true },
     { "folke/neodev.nvim", opts = {} },
   },
@@ -10,7 +9,6 @@ config = {
     local lspconfig = require("lspconfig")
     local utilities = require("lspconfig.util")
     local mason_lspconfig = require("mason-lspconfig")
-    local cmp_nvim_lsp = require("cmp_nvim_lsp")
 
     vim.api.nvim_create_autocmd("LspAttach", {
       group = vim.api.nvim_create_augroup("UserLspConfig", {}),
@@ -21,23 +19,15 @@ config = {
       end,
     })
 
-    local capabilities = cmp_nvim_lsp.default_capabilities()
     local signs = { Error = " ", Warn = " ", Hint = "󰠠 ", Info = " " }
     for type, icon in pairs(signs) do
       local hl = "DiagnosticSign" .. type
       vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
     end
 
-    lspconfig.cmake.setup()
     mason_lspconfig.setup_handlers({
-      function(server_name)
-        lspconfig[server_name].setup({
-          capabilities = capabilities,
-        })
-      end,
       ["svelte"] = function()
         lspconfig["svelte"].setup({
-          capabilities = capabilities,
           on_attach = function(client)
             vim.api.nvim_create_autocmd("BufWritePost", {
               pattern = { "*.js", "*.ts" },
@@ -48,21 +38,37 @@ config = {
           end,
         })
       end,
+      ["ts_ls"] = function()
+        lspconfig["ts_ls"].setup({
+          init_options = {
+            plugins = {
+              {
+                name = "@vue/typescript-plugin",
+                location = "/home/niek/.nvm/versions/node/v23.8.0/lib/@vue/language-server",
+                languages = { "javascript", "typescript", "vue" },
+              },
+            },
+          },
+          root_dir = { "tsconfig.json", "jsconfig.json", "package.json", ".git" },
+          filetypes = {
+            "javascript",
+            "typescript",
+            "vue",
+          },
+        })
+      end,
       ["graphql"] = function()
         lspconfig["graphql"].setup({
-          capabilities = capabilities,
           filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
         })
       end,
       ["emmet_ls"] = function()
         lspconfig["emmet_ls"].setup({
-          capabilities = capabilities,
           filetypes = { "html", "php", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" },
         })
       end,
       ["lua_ls"] = function()
         lspconfig["lua_ls"].setup({
-          capabilities = capabilities,
           settings = {
             Lua = {
               diagnostics = {
@@ -75,22 +81,20 @@ config = {
           },
         })
       end,
-      ["gopls"] = function()
-        lspconfig["gopls"].setup({
-          capabilities = capabilities,
-          filetypes = { "go", "gomod", "gowork", "gotmpl" },
-          cmd = { "gopls" },
-          root_dir = utilities.root_pattern("go.work", "go.mod", ".git"),
-          settings = {
-            gopls = {
-              completeUnimported = true,
-            },
-          },
-        })
-      end,
+      -- ["gopls"] = function()
+      --   lspconfig["gopls"].setup({
+      --     filetypes = { "go", "gomod", "gowork", "gotmpl" },
+      --     cmd = { "gopls" },
+      --     root_dir = utilities.root_pattern("go.work", "go.mod", ".git"),
+      --     settings = {
+      --       gopls = {
+      --         completeUnimported = true,
+      --       },
+      --     },
+      --   })
+      -- end,
       ["intelephense"] = function()
         lspconfig["intelephense"].setup({
-          capabilities = capabilities,
           filetypes = { "php", "phtml" },
           root_dir = utilities.root_pattern(".git", ".exercism"),
           files = {
@@ -100,7 +104,6 @@ config = {
       end,
       ["html"] = function()
         lspconfig["html"].setup({
-          capabilities = capabilities,
           filetypes = { "php", "phtml", "html" },
           root_dir = utilities.root_pattern(".git"),
         })
@@ -117,7 +120,6 @@ config = {
             "--compile-commands-dir=/home/niek/projects/ns-3/testing/build/",
             "--enable-config",
           },
-          capabilities = capabilities,
           filetypes = { "h", "cpp", "cc", "cxx" },
           root_dir = utilities.root_pattern("compile_commands.json", ".git", "Makefile"),
           init_options = {
@@ -129,7 +131,6 @@ config = {
       end,
       ["vhdl_ls"] = function()
         lspconfig["vhdl_ls"].setup({
-          capabilities = capabilities,
           filetypes = { "vhdl" },
           root_dir = utilities.root_pattern("clash-manifest.json"),
         })
