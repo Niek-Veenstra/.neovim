@@ -36,7 +36,6 @@ config = {
         })
       end,
       ["svelte"] = function()
-        -- configure svelte server
         lspconfig["svelte"].setup({
           capabilities = capabilities,
           on_attach = function(client)

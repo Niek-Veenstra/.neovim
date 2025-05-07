@@ -39,6 +39,7 @@
   "persistence.nvim": { "branch": "main", "commit": "166a79a55bfa7a4db3e26fc031b4d92af71d0b51" },
   "plenary.nvim": { "branch": "master", "commit": "857c5ac632080dba10aae49dba902ce3abf91b35" },
   "presence.nvim": { "branch": "main", "commit": "87c857a56b7703f976d3a5ef15967d80508df6e6" },
+  "remote-nvim.nvim": { "branch": "main", "commit": "66fc20fd259401c7bb6ac5189ecb6283c2eb65d2" },
   "render-markdown.nvim": { "branch": "main", "commit": "c065031d030955e1d071a7fcdd8c59e0fd2f0343" },
   "snacks.nvim": { "branch": "main", "commit": "bc0630e43be5699bb94dadc302c0d21615421d93" },
   "telescope.nvim": { "branch": "master", "commit": "814f102cd1da3dc78c7d2f20f2ef3ed3cdf0e6e4" },

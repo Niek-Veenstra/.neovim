@@ -11,7 +11,7 @@ map("n", "ztsh", ":<C-w>l<CR>:term<CR>", { noremap = true, silent = true, desc =
 map("n", "<leader>fl", LazyVim.pick("live_grep"), { silent = true, desc = "RipGrep file content search." })
 
 map("t", "<Esc>", "<C-\\><C-n>", { silent = true, desc = "Closes the default terminal." })
-map("n", "cr", ":IncRename", { noremap = true, silent = true, desc = "Inc rename" })
+map("n", "cr", ":IncRename ", { noremap = true, silent = true, desc = "Inc rename" })
 -- End terminal
 map(
   "n",
