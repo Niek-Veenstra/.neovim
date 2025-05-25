@@ -13,6 +13,17 @@ map("n", "<leader>fl", LazyVim.pick("live_grep"), { silent = true, desc = "RipGr
 map("t", "<Esc>", "<C-\\><C-n>", { silent = true, desc = "Closes the default terminal." })
 map("n", "cr", ":IncRename ", { noremap = true, silent = true, desc = "Inc rename" })
 -- End terminal
+
+-- Bufferline
+map("n", "<leader>bs", function()
+  functions = require("config.functions")
+  require("bufferline").sort_by(functions.sort_terminal)
+end, { noremap = true, silent = true, desc = "Sort" })
+
+map("n", "<M-Right>", ":BufferLineMoveNext<CR>", { noremap = true, silent = true, desc = "Sort" })
+map("n", "<M-Left>", ":BufferLineMovePrev<CR>", { noremap = true, silent = true, desc = "Sort" })
+
+-- End bufferline
 map(
   "n",
   "zcd",

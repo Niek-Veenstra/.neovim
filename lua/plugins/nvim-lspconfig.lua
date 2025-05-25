@@ -66,6 +66,7 @@ return {
       vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
     end
 
+    local capabilities = require('blink.cmp').get_lsp_capabilities();
     mason_lspconfig.setup_handlers({
       ["svelte"] = function()
         lspconfig["svelte"].setup({
@@ -79,48 +80,73 @@ return {
           end,
         })
       end,
-      ["ts_ls"] = function()
-        lspconfig["ts_ls"].setup({
+      -- ["ts_ls"] = function()
+      --   local mason_registry = require('mason-registry')
+      --   local vue_language_server_path = mason_registry.get_package('vue-language-server'):get_install_path() .. '/node_modules/@vue/language-server'
+      --   lspconfig["ts_ls"].setup({
+      --     capabilities = capabilities,
+      --     init_options = {
+      --       plugins = {
+      --         {
+      --           name = "@vue/typescript-plugin",
+      --           location = vue_language_server_path,
+      --           languages = {  "vue" },
+      --         },
+      --       },
+      --     }
+      --   })
+      -- end,
+      
+      ["volar"] = function()
+        lspconfig["volar"].setup({
+          capabilities = capabilities,
           init_options = {
-            plugins = {
-              {
-                name = "@vue/typescript-plugin",
-                location = "/home/niek/.nvm/versions/node/v23.8.0/lib/@vue/language-server",
-                languages = { "javascript", "typescript", "vue" },
-              },
-            },
-          },
-          root_dir = { "tsconfig.json", "jsconfig.json", "package.json", ".git" },
-          filetypes = {
-            "javascript",
-            "typescript",
-            "vue",
-          },
+            vue = {
+              hybridMode = false
+            }
+          }
         })
       end,
       ["tailwindcss"] = function()
         lspconfig["tailwindcss"].setup({
-          root_dir = { "tsconfig.json", "jsconfig.json", "package.json", ".git" },
-          filetypes = {
-            "javascript",
-            "typescript",
-            "svelte",
-            "vue",
-          },
+          capabilities = capabilities,
+          root_dir = utilities.root_pattern(".git","package.json","package-lock.json","tsconfig.json","jsconfig.json")
         })
       end,
       ["graphql"] = function()
         lspconfig["graphql"].setup({
+          capabilities = capabilities,
           filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
         })
       end,
-      ["emmet_ls"] = function()
-        lspconfig["emmet_ls"].setup({
-          filetypes = { "html", "php", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" },
+      ["emmet_language_server"] = function()
+        lspconfig["emmet_language_server"].setup({
+          filetypes = { "css","vue", "eruby", "html", "javascript", "javascriptreact", "less", "sass", "scss", "pug", "typescriptreact" },
+              init_options = {
+                ---@type table<string, string>
+                includeLanguages = {},
+                --- @type string[]
+                excludeLanguages = {},
+                --- @type string[]
+                extensionsPath = {},
+                --- @type table<string, any> 
+                preferences = {},
+                --- @type boolean Defaults to `true`
+                showAbbreviationSuggestions = true,
+                --- @type "always" | "never" Defaults to `"always"`
+                showExpandedAbbreviation = "always",
+                --- @type boolean Defaults to `false`
+                showSuggestionsAsSnippets = false,
+                --- @type table<string, any> [Emmet Docs](https://docs.emmet.io/customization/syntax-profiles/)
+                syntaxProfiles = {},
+                --- @type table<string, string> [Emmet Docs](https://docs.emmet.io/customization/snippets/#variables)
+                variables = {},
+            },
         })
       end,
       ["lua_ls"] = function()
         lspconfig["lua_ls"].setup({
+          capabilities = capabilities,
           settings = {
             Lua = {
               diagnostics = {
@@ -147,6 +173,7 @@ return {
       -- end,
       ["intelephense"] = function()
         lspconfig["intelephense"].setup({
+          capabilities = capabilities,
           filetypes = { "php", "phtml" },
           root_dir = utilities.root_pattern(".git", ".exercism"),
           files = {
@@ -156,21 +183,20 @@ return {
       end,
       ["html"] = function()
         lspconfig["html"].setup({
+          capabilities = capabilities,
           filetypes = { "php", "phtml", "html" },
           root_dir = utilities.root_pattern(".git"),
         })
       end,
       ["clangd"] = function()
         lspconfig["clangd"].setup({
+          capabilities = capabilities,
           cmd = {
+            "clangd",
             "--log=verbose",
             "--pretty",
             "--background-index",
-            "--clang-tidy",
             "--header-insertion=iwyu",
-            "--completion-style=detailed",
-            "--compile-commands-dir=/home/niek/projects/ns-3/testing/build/",
-            "--enable-config",
           },
           filetypes = { "h", "cpp", "cc", "cxx" },
           root_dir = utilities.root_pattern("compile_commands.json", ".git", "Makefile"),
@@ -183,6 +209,7 @@ return {
       end,
       ["vhdl_ls"] = function()
         lspconfig["vhdl_ls"].setup({
+          capabilities = capabilities,
           filetypes = { "vhdl" },
           root_dir = utilities.root_pattern("clash-manifest.json"),
         })
