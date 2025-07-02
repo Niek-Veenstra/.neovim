@@ -27,10 +27,10 @@ function set_key_binds(opts)
   keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts) -- show diagnostics for line
 
   opts.desc = "Go to previous diagnostic"
-  keymap.set("n", "[d", vim.diagnostic.goto_prev, opts) -- jump to previous diagnostic in buffer
+  keymap.set("n", "[d", vim.diagnostic.get_prev_pos, opts) -- jump to previous diagnostic in buffer
 
   opts.desc = "Go to next diagnostic"
-  keymap.set("n", "]d", vim.diagnostic.goto_next, opts) -- jump to next diagnostic in buffer
+  keymap.set("n", "]d", vim.diagnostic.get_next_pos, opts) -- jump to next diagnostic in buffer
 
   opts.desc = "Show documentation for what is under cursor"
   keymap.set("n", "K", vim.lsp.buf.hover, opts) -- show documentation for what is under cursor
@@ -44,12 +44,13 @@ return {
   event = { "BufReadPre", "BufNewFile" },
   dependencies = {
     { "antosha417/nvim-lsp-file-operations", config = true },
-    { "folke/neodev.nvim", opts = {} },
+    { "folke/neodev.nvim",                   opts = {} },
   },
   config = function()
     local lspconfig = require("lspconfig")
     local utilities = require("lspconfig.util")
     local mason_lspconfig = require("mason-lspconfig")
+    local esp32 = require("esp32")
 
     vim.api.nvim_create_autocmd("LspAttach", {
       group = vim.api.nvim_create_augroup("UserLspConfig", {}),
@@ -96,7 +97,7 @@ return {
       --     }
       --   })
       -- end,
-      
+
       ["volar"] = function()
         lspconfig["volar"].setup({
           capabilities = capabilities,
@@ -110,7 +111,7 @@ return {
       ["tailwindcss"] = function()
         lspconfig["tailwindcss"].setup({
           capabilities = capabilities,
-          root_dir = utilities.root_pattern(".git","package.json","package-lock.json","tsconfig.json","jsconfig.json")
+          root_dir = utilities.root_pattern(".git", "package.json", "package-lock.json", "tsconfig.json", "jsconfig.json")
         })
       end,
       ["graphql"] = function()
@@ -121,27 +122,27 @@ return {
       end,
       ["emmet_language_server"] = function()
         lspconfig["emmet_language_server"].setup({
-          filetypes = { "css","vue", "eruby", "html", "javascript", "javascriptreact", "less", "sass", "scss", "pug", "typescriptreact" },
-              init_options = {
-                ---@type table<string, string>
-                includeLanguages = {},
-                --- @type string[]
-                excludeLanguages = {},
-                --- @type string[]
-                extensionsPath = {},
-                --- @type table<string, any> 
-                preferences = {},
-                --- @type boolean Defaults to `true`
-                showAbbreviationSuggestions = true,
-                --- @type "always" | "never" Defaults to `"always"`
-                showExpandedAbbreviation = "always",
-                --- @type boolean Defaults to `false`
-                showSuggestionsAsSnippets = false,
-                --- @type table<string, any> [Emmet Docs](https://docs.emmet.io/customization/syntax-profiles/)
-                syntaxProfiles = {},
-                --- @type table<string, string> [Emmet Docs](https://docs.emmet.io/customization/snippets/#variables)
-                variables = {},
-            },
+          filetypes = { "css", "vue", "eruby", "html", "javascript", "javascriptreact", "less", "sass", "scss", "pug", "typescriptreact" },
+          init_options = {
+            ---@type table<string, string>
+            includeLanguages = {},
+            --- @type string[]
+            excludeLanguages = {},
+            --- @type string[]
+            extensionsPath = {},
+            --- @type table<string, any>
+            preferences = {},
+            --- @type boolean Defaults to `true`
+            showAbbreviationSuggestions = true,
+            --- @type "always" | "never" Defaults to `"always"`
+            showExpandedAbbreviation = "always",
+            --- @type boolean Defaults to `false`
+            showSuggestionsAsSnippets = false,
+            --- @type table<string, any> [Emmet Docs](https://docs.emmet.io/customization/syntax-profiles/)
+            syntaxProfiles = {},
+            --- @type table<string, string> [Emmet Docs](https://docs.emmet.io/customization/snippets/#variables)
+            variables = {},
+          },
         })
       end,
       ["lua_ls"] = function()
@@ -189,23 +190,26 @@ return {
         })
       end,
       ["clangd"] = function()
-        lspconfig["clangd"].setup({
-          capabilities = capabilities,
-          cmd = {
-            "clangd",
-            "--log=verbose",
-            "--pretty",
-            "--background-index",
-            "--header-insertion=iwyu",
-          },
-          filetypes = { "h", "cpp", "cc", "cxx" },
-          root_dir = utilities.root_pattern("compile_commands.json", ".git", "Makefile"),
-          init_options = {
-            usePlaceholders = true,
-            completeUnimported = true,
-            clangdFileStatus = true,
-          },
-        })
+        lspconfig["clangd"].setup(esp32.lsp_config());
+        -- lspconfig["clangd"].setup({
+        --   capabilities = capabilities,
+        --   cmd = {
+        --     "clangd",
+        --     "--log=verbose",
+        --     "--pretty",
+        --     "--background-index",
+        --     "--header-insertion=iwyu",
+        --     "--enable-config",
+        --     "--query-driver=/home/niekv/.espressif/tools/**"
+        --   },
+        --   filetypes = { "h", "cpp", "cc", "cxx","c" },
+        --   root_dir = utilities.root_pattern("compile_commands.json", ".git", "Makefile","sdkconfig", "managed_components"),
+        --   init_options = {
+        --     usePlaceholders = true,
+        --     completeUnimported = true,
+        --     clangdFileStatus = true,
+        --   },
+        -- })
       end,
       ["vhdl_ls"] = function()
         lspconfig["vhdl_ls"].setup({

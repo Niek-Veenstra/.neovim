@@ -6,7 +6,7 @@ F.sort_terminal = function(buf_a, buf_b)
     return false
   end
   if buf_b.name == "zsh" then
-    return false
+    return true
   end
   return bufferline.sort_by("directory")
 end
