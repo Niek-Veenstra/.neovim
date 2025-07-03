@@ -44,7 +44,7 @@ return {
   event = { "BufReadPre", "BufNewFile" },
   dependencies = {
     { "antosha417/nvim-lsp-file-operations", config = true },
-    { "folke/neodev.nvim",                   opts = {} },
+    { "folke/neodev.nvim", opts = {} },
   },
   config = function()
     local lspconfig = require("lspconfig")
@@ -66,8 +66,24 @@ return {
       local hl = "DiagnosticSign" .. type
       vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
     end
+    local vue_language_server_path = vim.fn.stdpath("data")
+      .. "/mason/packages/vue-language-server/node_modules/@vue/language-server"
+    local vue_plugin = {
+      name = "@vue/typescript-plugin",
+      location = vue_language_server_path,
+      languages = { "vue" },
+      configNamespace = "typescript",
+    }
+    local vtsls_config = {
+      init_options = {
+        plugins = {
+          vue_plugin,
+        },
+      },
+      filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
+    }
 
-    local capabilities = require('blink.cmp').get_lsp_capabilities();
+    local capabilities = require("blink.cmp").get_lsp_capabilities()
     mason_lspconfig.setup_handlers({
       ["svelte"] = function()
         lspconfig["svelte"].setup({
@@ -81,37 +97,16 @@ return {
           end,
         })
       end,
-      -- ["ts_ls"] = function()
-      --   local mason_registry = require('mason-registry')
-      --   local vue_language_server_path = mason_registry.get_package('vue-language-server'):get_install_path() .. '/node_modules/@vue/language-server'
-      --   lspconfig["ts_ls"].setup({
-      --     capabilities = capabilities,
-      --     init_options = {
-      --       plugins = {
-      --         {
-      --           name = "@vue/typescript-plugin",
-      --           location = vue_language_server_path,
-      --           languages = {  "vue" },
-      --         },
-      --       },
-      --     }
-      --   })
-      -- end,
-
-      ["volar"] = function()
-        lspconfig["volar"].setup({
-          capabilities = capabilities,
-          init_options = {
-            vue = {
-              hybridMode = false
-            }
-          }
-        })
-      end,
       ["tailwindcss"] = function()
         lspconfig["tailwindcss"].setup({
           capabilities = capabilities,
-          root_dir = utilities.root_pattern(".git", "package.json", "package-lock.json", "tsconfig.json", "jsconfig.json")
+          root_dir = utilities.root_pattern(
+            ".git",
+            "package.json",
+            "package-lock.json",
+            "tsconfig.json",
+            "jsconfig.json"
+          ),
         })
       end,
       ["graphql"] = function()
@@ -122,7 +117,19 @@ return {
       end,
       ["emmet_language_server"] = function()
         lspconfig["emmet_language_server"].setup({
-          filetypes = { "css", "vue", "eruby", "html", "javascript", "javascriptreact", "less", "sass", "scss", "pug", "typescriptreact" },
+          filetypes = {
+            "css",
+            "vue",
+            "eruby",
+            "html",
+            "javascript",
+            "javascriptreact",
+            "less",
+            "sass",
+            "scss",
+            "pug",
+            "typescriptreact",
+          },
           init_options = {
             ---@type table<string, string>
             includeLanguages = {},
@@ -190,7 +197,7 @@ return {
         })
       end,
       ["clangd"] = function()
-        lspconfig["clangd"].setup(esp32.lsp_config());
+        lspconfig["clangd"].setup(esp32.lsp_config())
         -- lspconfig["clangd"].setup({
         --   capabilities = capabilities,
         --   cmd = {
@@ -219,5 +226,17 @@ return {
         })
       end,
     })
+    local vue_ls_config = {
+      filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
+      init_options = {
+        vue = {
+          hybridMode = false,
+        },
+      },
+    }
+
+    vim.lsp.config("vtsls", vtsls_config)
+    vim.lsp.config("vue_ls", vue_ls_config)
+    vim.lsp.enable({ "vtsls", "vue_ls" })
   end,
 }
