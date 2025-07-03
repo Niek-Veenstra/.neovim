@@ -13,6 +13,7 @@ return {
     local esp32 = require("esp32")
     local mason = require("mason")
     local mason_lspconfig = require("mason-lspconfig")
+    local capabilities = require("blink.cmp").get_lsp_capabilities({}, true)
 
     mason.setup({
       ui = {
@@ -104,6 +105,7 @@ return {
     local vue_language_server_path = vim.fn.stdpath("data")
       .. "/mason/packages/vue-language-server/node_modules/@vue/language-server"
     local vtsls_config = {
+      config = capabilities,
       filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
       settings = {
         vtsls = { tsserver = { globalPlugins = {} } },
@@ -133,6 +135,7 @@ return {
       end,
     }
     local config_svelte = {
+      config = capabilities,
       on_attach = function(client)
         vim.api.nvim_create_autocmd("BufWritePost", {
           pattern = { "*.js", "*.ts" },
@@ -143,14 +146,17 @@ return {
       end,
     }
     local config_tailwindcss = {
+      config = capabilities,
       root_dir = utilities.root_pattern(".git", "package.json", "package-lock.json", "tsconfig.json", "jsconfig.json"),
     }
 
     local config_graphql = {
+      config = capabilities,
       filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
     }
 
     local config_emmet_language_server = {
+      config = capabilities,
       filetypes = {
         "css",
         "vue",
@@ -187,6 +193,7 @@ return {
     }
 
     local config_lua_ls = {
+      config = capabilities,
       settings = {
         Lua = {
           diagnostics = {
@@ -200,6 +207,7 @@ return {
     }
 
     local config_intelephense = {
+      config = capabilities,
       filetypes = { "php", "phtml" },
       root_dir = utilities.root_pattern(".git", ".exercism"),
       files = {
@@ -208,11 +216,13 @@ return {
     }
 
     local config_html = {
+      config = capabilities,
       filetypes = { "php", "phtml", "html" },
       root_dir = utilities.root_pattern(".git"),
     }
 
     local config_clangd = esp32.lsp_config({
+      config = capabilities,
       cmd = {
         "clangd",
         "--log=verbose",
@@ -232,28 +242,21 @@ return {
     })
 
     local config_vhdl_ls = {
+      config = capabilities,
       filetypes = { "vhdl" },
       root_dir = utilities.root_pattern("clash-manifest.json"),
     }
 
-    local vue_ls_config = {
-      filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
-      init_options = {
-        vue = {
-          hybridMode = false,
-        },
-      },
-    }
-    vim.lsp.config("vtsls", vtsls_config)
-    vim.lsp.config("vue_ls", vue_ls_config)
-    vim.lsp.config("vhdl_ls", config_vhdl_ls)
-    vim.lsp.config("clangd", config_clangd)
-    vim.lsp.config("html", config_html)
-    vim.lsp.config("intelephense", config_intelephense)
-    vim.lsp.config("lua_ls", config_lua_ls)
-    vim.lsp.config("emmet_language_server", config_emmet_language_server)
-    vim.lsp.config("graphql", config_graphql)
-    vim.lsp.config("tailwindcss", config_tailwindcss)
-    vim.lsp.config("svelte", config_svelte)
+    local lspconfig = require("lspconfig")
+    lspconfig["vtsls"].setup(vtsls_config)
+    lspconfig["vhdl_ls"].setup(config_vhdl_ls)
+    lspconfig["clangd"].setup(config_clangd)
+    lspconfig["html"].setup(config_html)
+    lspconfig["intelephense"].setup(config_intelephense)
+    lspconfig["lua_ls"].setup(config_lua_ls)
+    lspconfig["emmet_language_server"].setup(config_emmet_language_server)
+    lspconfig["graphql"].setup(config_graphql)
+    lspconfig["tailwindcss"].setup(config_tailwindcss)
+    lspconfig["svelte"].setup(config_svelte)
   end,
 }
