@@ -6,7 +6,7 @@ return {
       "rcarriga/nvim-dap-ui",
       "theHamsta/nvim-dap-virtual-text",
       "nvim-neotest/nvim-nio",
-      "williamboman/mason.nvim",
+      { "mason-org/mason.nvim", version = "2.0.0" },
     },
     config = function()
       local dapui = require("dapui")

@@ -13,8 +13,8 @@ map("n", "<leader>bs", function()
   functions = require("config.functions")
   require("bufferline").sort_by(functions.sort_terminal)
 end, { noremap = true, silent = true, desc = "Sort" })
-map("n", "<M-Right>", ":BufferLineMoveNext<CR>", { noremap = true, silent = true, desc = "Move buffer right." })
-map("n", "<M-Left>", ":BufferLineMovePrev<CR>", { noremap = true, silent = true, desc = "Move buffer left." })
+map("n", "<M-Right>", ":BufferLineMoveNext<CR>", { silent = true, desc = "Move buffer right." })
+map("n", "<M-Left>", ":BufferLineMovePrev<CR>", { silent = true, desc = "Move buffer left." })
 -- End bufferline
 
 -- Git.
@@ -24,7 +24,12 @@ map(
   ":Neogit<CR>",
   { noremap = true, silent = true, desc = "Opens up NeoGit for the git repo in CWD." }
 )
-map("n","<leader>gf", require('fzf-lua').git_bcommits, { noremap = true, silent = true, desc = "Show git file history." })
+map(
+  "n",
+  "<leader>gf",
+  require("fzf-lua").git_bcommits,
+  { noremap = true, silent = true, desc = "Show git file history." }
+)
 -- End git.
 
 -- Code
@@ -34,7 +39,6 @@ map(
   vim.lsp.buf.hover,
   { noremap = true, silent = true, desc = "Shows code documentation for the code highlighted at the cursor." }
 )
-
 
 local wk = require("which-key")
 local myKeymapsName = "Niek zijn keymaps"

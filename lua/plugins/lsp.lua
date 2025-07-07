@@ -4,6 +4,7 @@ return {
   dependencies = {
     { "yioneko/nvim-vtsls" },
     { "nvim-lua/plenary.nvim" },
+    { "mason-org/mason.nvim" },
     { "antosha417/nvim-lsp-file-operations", config = true },
     { "folke/neodev.nvim", opts = {} },
   },
@@ -33,12 +34,12 @@ return {
         "lua_ls",
         "vtsls",
         "pyright",
+        "cmake",
         "clangd",
         "intelephense",
         "emmet_language_server",
-        "ts_ls",
+        "vue_ls",
         "tailwindcss",
-        "volar",
         "eslint",
       },
       automatic_installation = {
@@ -46,6 +47,7 @@ return {
         "cssls",
         "svelte",
         "lua_ls",
+        "cmake",
         "pyright",
         "clangd",
         "intelephense",
@@ -102,8 +104,7 @@ return {
       local hl = "DiagnosticSign" .. type
       vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
     end
-    local vue_language_server_path = vim.fn.stdpath("data")
-      .. "/mason/packages/vue-language-server/node_modules/@vue/language-server"
+
     local vtsls_config = {
       config = capabilities,
       filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
@@ -123,8 +124,9 @@ return {
       before_init = function(_, config)
         table.insert(config.settings.vtsls.tsserver.globalPlugins, {
           name = "@vue/typescript-plugin",
-          location = vim.fn.expand(vue_language_server_path),
+          location = LazyVim.get_pkg_path("vue-language-server", "/node_modules/@vue/language-server"),
           languages = { "vue" },
+          filetypes = { "vue" },
           configNamespace = "typescript",
           enableForWorkspaceTypeScriptVersions = true,
         })
@@ -153,6 +155,33 @@ return {
     local config_graphql = {
       config = capabilities,
       filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
+    }
+    local vue_ls = {
+      on_init = function(client)
+        client.handlers["tsserver/request"] = function(_, result, context)
+          local clients = vim.lsp.get_clients({ bufnr = context.bufnr, name = "vtsls" })
+          if #clients == 0 then
+            vim.notify("Could not found `vtsls` lsp client, vue_lsp would not work without it.", vim.log.levels.ERROR)
+            return
+          end
+          local ts_client = clients[1]
+
+          local param = unpack(result)
+          local id, command, payload = unpack(param)
+          ts_client:exec_cmd({
+            title = "vue_request_forward",
+            command = "typescript.tsserverRequest",
+            arguments = {
+              command,
+              payload,
+            },
+          }, { bufnr = context.bufnr }, function(_, r)
+            local response_data = { { id, r.body } }
+            ---@diagnostic disable-next-line: param-type-mismatch
+            client:notify("tsserver/response", response_data)
+          end)
+        end
+      end,
     }
 
     local config_emmet_language_server = {
@@ -247,16 +276,29 @@ return {
       root_dir = utilities.root_pattern("clash-manifest.json"),
     }
 
-    local lspconfig = require("lspconfig")
-    lspconfig["vtsls"].setup(vtsls_config)
-    lspconfig["vhdl_ls"].setup(config_vhdl_ls)
-    lspconfig["clangd"].setup(config_clangd)
-    lspconfig["html"].setup(config_html)
-    lspconfig["intelephense"].setup(config_intelephense)
-    lspconfig["lua_ls"].setup(config_lua_ls)
-    lspconfig["emmet_language_server"].setup(config_emmet_language_server)
-    lspconfig["graphql"].setup(config_graphql)
-    lspconfig["tailwindcss"].setup(config_tailwindcss)
-    lspconfig["svelte"].setup(config_svelte)
+    vim.lsp.config("vtsls", vtsls_config)
+    vim.lsp.config("vhdl_ls", config_vhdl_ls)
+    vim.lsp.config("clangd", config_clangd)
+    vim.lsp.config("html", config_html)
+    vim.lsp.config("intelephense", config_intelephense)
+    vim.lsp.config("lua_ls", config_lua_ls)
+    vim.lsp.config("emmet_language_server", config_emmet_language_server)
+    vim.lsp.config("graphql", config_graphql)
+    vim.lsp.config("tailwindcss", config_tailwindcss)
+    vim.lsp.config("svelte", config_svelte)
+    vim.lsp.config("vue_ls", vue_ls)
+
+    vim.lsp.enable("cmake")
+    vim.lsp.enable("vtsls")
+    vim.lsp.enable("vhdl_ls")
+    vim.lsp.enable("clangd")
+    vim.lsp.enable("html")
+    vim.lsp.enable("intelephense")
+    vim.lsp.enable("lua_ls")
+    vim.lsp.enable("emmet_language_server")
+    vim.lsp.enable("graphql")
+    vim.lsp.enable("tailwindcss")
+    vim.lsp.enable("svelte")
+    vim.lsp.enable("vue_ls")
   end,
 }
