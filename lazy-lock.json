@@ -19,6 +19,7 @@
   "haskell-snippets.nvim": { "branch": "master", "commit": "27ac316463b9807496cd03e65289d3e79aa23528" },
   "haskell-tools.nvim": { "branch": "master", "commit": "5fa6671ff4face61be6a439b085c4977c20a60dc" },
   "inc-rename.nvim": { "branch": "main", "commit": "a3e31af13844534c66041ce92f29af7745883875" },
+  "last-color.nvim": { "branch": "main", "commit": "000e3e50047602f4b9725dd33aff631018592595" },
   "lazy.nvim": { "branch": "main", "commit": "6c3bda4aca61a13a9c63f1c1d1b16b9d3be90d7a" },
   "lazydev.nvim": { "branch": "main", "commit": "2367a6c0a01eb9edb0464731cc0fb61ed9ab9d2c" },
   "lualine.nvim": { "branch": "master", "commit": "a94fc68960665e54408fe37dcf573193c4ce82c9" },
@@ -60,6 +61,7 @@
   "tokyonight.nvim": { "branch": "main", "commit": "057ef5d260c1931f1dffd0f052c685dcd14100a3" },
   "trouble.nvim": { "branch": "main", "commit": "85bedb7eb7fa331a2ccbecb9202d8abba64d37b3" },
   "ts-comments.nvim": { "branch": "main", "commit": "1bd9d0ba1d8b336c3db50692ffd0955fe1bb9f0c" },
+  "vim-code-dark": { "branch": "master", "commit": "4624dc223bf574aa9a731c2383c579847303c380" },
   "vim-pio": { "branch": "master", "commit": "6bba1d4e4c57f3bfadd0b3163652985a61764ab7" },
   "which-key.nvim": { "branch": "main", "commit": "370ec46f710e058c9c1646273e6b225acf47cbed" }
 }
