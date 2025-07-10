@@ -149,7 +149,6 @@ return {
     }
     local config_tailwindcss = {
       config = capabilities,
-      root_dir = utilities.root_pattern(".git", "package.json", "package-lock.json", "tsconfig.json", "jsconfig.json"),
     }
 
     local config_graphql = {
