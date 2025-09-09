@@ -32,6 +32,19 @@ map(
 )
 -- End git.
 
+-- Finder
+
+-- If this does not work, might be due to the fact some terminal difference shift difference.
+-- Information: https://neovim.io/doc/user/intro.html#CTRL-%7Bchar%7D
+map(
+  { "n", "i" },
+  "<S-Left><S-Left>",
+  ":Telescope find_files<CR>",
+  { noremap = true, silent = true, desc = "Opens file finder." }
+)
+
+-- End Finder
+
 -- Code
 map(
   "n",
@@ -39,6 +52,7 @@ map(
   vim.lsp.buf.hover,
   { noremap = true, silent = true, desc = "Shows code documentation for the code highlighted at the cursor." }
 )
+-- End code
 
 local wk = require("which-key")
 local myKeymapsName = "Niek zijn keymaps"

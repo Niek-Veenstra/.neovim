@@ -5,6 +5,7 @@ return {
     { "yioneko/nvim-vtsls" },
     { "nvim-lua/plenary.nvim" },
     { "mason-org/mason.nvim" },
+    { "mason-org/mason-lspconfig.nvim" },
     { "antosha417/nvim-lsp-file-operations", config = true },
     { "folke/neodev.nvim", opts = {} },
   },
@@ -27,6 +28,11 @@ return {
     })
 
     mason_lspconfig.setup({
+      automatic_enable = {
+        exclude = {
+          "rust_analyzer",
+        },
+      },
       ensure_installed = {
         "html",
         "cssls",
@@ -106,7 +112,7 @@ return {
     end
 
     local vtsls_config = {
-      config = capabilities,
+      capabilities = capabilities,
       filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
       settings = {
         vtsls = { tsserver = { globalPlugins = {} } },
@@ -137,7 +143,7 @@ return {
       end,
     }
     local config_svelte = {
-      config = capabilities,
+      capabilities = capabilities,
       on_attach = function(client)
         vim.api.nvim_create_autocmd("BufWritePost", {
           pattern = { "*.js", "*.ts" },
@@ -148,14 +154,15 @@ return {
       end,
     }
     local config_tailwindcss = {
-      config = capabilities,
+      capabilities = capabilities,
     }
 
     local config_graphql = {
-      config = capabilities,
+      capabilities = capabilities,
       filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
     }
-    local vue_ls = {
+    local config_vue_ls = {
+      capabilities = capabilities,
       on_init = function(client)
         client.handlers["tsserver/request"] = function(_, result, context)
           local clients = vim.lsp.get_clients({ bufnr = context.bufnr, name = "vtsls" })
@@ -184,7 +191,7 @@ return {
     }
 
     local config_emmet_language_server = {
-      config = capabilities,
+      capabilities = capabilities,
       filetypes = {
         "css",
         "vue",
@@ -221,7 +228,7 @@ return {
     }
 
     local config_lua_ls = {
-      config = capabilities,
+      capabilities = capabilities,
       settings = {
         Lua = {
           diagnostics = {
@@ -235,7 +242,7 @@ return {
     }
 
     local config_intelephense = {
-      config = capabilities,
+      capabilities = capabilities,
       filetypes = { "php", "phtml" },
       root_dir = utilities.root_pattern(".git", ".exercism"),
       files = {
@@ -244,13 +251,13 @@ return {
     }
 
     local config_html = {
-      config = capabilities,
+      capabilities = capabilities,
       filetypes = { "php", "phtml", "html" },
       root_dir = utilities.root_pattern(".git"),
     }
 
     local config_clangd = esp32.lsp_config({
-      config = capabilities,
+      capabilities = capabilities,
       cmd = {
         "clangd",
         "--log=verbose",
@@ -270,7 +277,7 @@ return {
     })
 
     local config_vhdl_ls = {
-      config = capabilities,
+      capabilities = capabilities,
       filetypes = { "vhdl" },
       root_dir = utilities.root_pattern("clash-manifest.json"),
     }
@@ -285,7 +292,7 @@ return {
     vim.lsp.config("graphql", config_graphql)
     vim.lsp.config("tailwindcss", config_tailwindcss)
     vim.lsp.config("svelte", config_svelte)
-    vim.lsp.config("vue_ls", vue_ls)
+    vim.lsp.config("vue_ls", config_vue_ls)
 
     vim.lsp.enable("cmake")
     vim.lsp.enable("vtsls")
