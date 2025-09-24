@@ -12,9 +12,6 @@ return {
             check = {
               allTargets = false,
             },
-            cargo = {
-              target = "thumbv7em-none-eabihf",
-            },
             diagnostics = { enable = true },
           },
         },

@@ -14,9 +14,18 @@ return {
       go = { "gofumpt", "goimports_reviser", "goline" },
       cpp = { "clangf" },
       h = { "clangf" },
+      rust = { "rformat" },
     },
     notify_on_error = true,
     formatters = {
+      rformat = {
+        command = "cargo",
+        args = {
+          "fmt",
+          "$FILENAME",
+        },
+        stdin = false,
+      },
       php = {
         command = "php-cs-fixer",
         args = {

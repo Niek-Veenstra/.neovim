@@ -2,7 +2,6 @@ local map = vim.keymap.set
 -- Terminal
 map("n", "ztps", ":terminal powershell<CR>", { noremap = true, silent = true, desc = "Opens a powershell terminal." })
 map("n", "ztsh", ":<C-w>l<CR>:term<CR>", { noremap = true, silent = true, desc = "Opens the default terminal." })
-map("n", "<leader>fl", LazyVim.pick("live_grep"), { silent = true, desc = "RipGrep file content search." })
 
 map("t", "<Esc>", "<C-\\><C-n>", { silent = true, desc = "Closes the default terminal." })
 map("n", "cr", ":IncRename ", { noremap = true, silent = true, desc = "Inc rename" })
@@ -34,14 +33,15 @@ map(
 
 -- Finder
 
--- If this does not work, might be due to the fact some terminal difference shift difference.
--- Information: https://neovim.io/doc/user/intro.html#CTRL-%7Bchar%7D
 map(
-  { "n", "i" },
-  "<S-Left><S-Left>",
+  { "n" },
+  "<leader>ff",
   ":Telescope find_files<CR>",
-  { noremap = true, silent = true, desc = "Opens file finder." }
+  { noremap = true, silent = true, desc = "Opens CWD file finder." }
 )
+map("n", "<leader>fl", ":Telescope live_grep<CR>", { silent = true, desc = "RipGrep CWD content search." })
+map({ "n" }, "ff", ":Telescope find_files<CR>", { noremap = true, silent = true, desc = "Opens CWD file finder." })
+map("n", "fl", ":Telescope live_grep<CR>", { silent = true, desc = "RipGrep CWD content search." })
 
 -- End Finder
 

@@ -2,17 +2,12 @@ return {
   "git@github.com:neovim/nvim-lspconfig.git",
   event = { "BufReadPre", "BufNewFile" },
   dependencies = {
-    { "yioneko/nvim-vtsls" },
     { "nvim-lua/plenary.nvim" },
     { "mason-org/mason.nvim" },
     { "mason-org/mason-lspconfig.nvim" },
-    { "antosha417/nvim-lsp-file-operations", config = true },
-    { "folke/neodev.nvim", opts = {} },
   },
   opts = {},
   config = function()
-    local utilities = require("lspconfig.util")
-    local esp32 = require("esp32")
     local mason = require("mason")
     local mason_lspconfig = require("mason-lspconfig")
     local capabilities = require("blink.cmp").get_lsp_capabilities({}, true)
@@ -31,6 +26,7 @@ return {
       automatic_enable = {
         exclude = {
           "rust_analyzer",
+          "clangd",
         },
       },
       ensure_installed = {
@@ -41,7 +37,6 @@ return {
         "vtsls",
         "pyright",
         "cmake",
-        "clangd",
         "intelephense",
         "emmet_language_server",
         "vue_ls",
@@ -59,6 +54,7 @@ return {
         "intelephense",
       },
     })
+    local noice = require("noice")
 
     vim.api.nvim_create_autocmd("LspAttach", {
       group = vim.api.nvim_create_augroup("lsp-attach", {}),
@@ -157,10 +153,6 @@ return {
       capabilities = capabilities,
     }
 
-    local config_graphql = {
-      capabilities = capabilities,
-      filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
-    }
     local config_vue_ls = {
       capabilities = capabilities,
       on_init = function(client)
@@ -244,7 +236,7 @@ return {
     local config_intelephense = {
       capabilities = capabilities,
       filetypes = { "php", "phtml" },
-      root_dir = utilities.root_pattern(".git", ".exercism"),
+      root_markers = { ".git", ".exercism" },
       files = {
         associations = { "php", "phtml" },
       },
@@ -253,10 +245,11 @@ return {
     local config_html = {
       capabilities = capabilities,
       filetypes = { "php", "phtml", "html" },
-      root_dir = utilities.root_pattern(".git"),
+      root_markers = { ".git" },
     }
 
-    local config_clangd = esp32.lsp_config({
+    local c_cpp_ft = { "h", "cpp", "cc", "cxx", "c" }
+    local config_clangd = {
       capabilities = capabilities,
       cmd = {
         "clangd",
@@ -265,44 +258,66 @@ return {
         "--background-index",
         "--header-insertion=iwyu",
         "--enable-config",
-        "--query-driver=/home/niekv/.espressif/tools/**",
       },
-      filetypes = { "h", "cpp", "cc", "cxx", "c" },
-      root_dir = utilities.root_pattern("compile_commands.json", ".git", "Makefile", "sdkconfig", "managed_components"),
+      filetypes = c_cpp_ft,
+      root_markers = {
+        ".clangd",
+        "compile_commands.json",
+        ".git",
+        "Makefile",
+        "managed_components",
+        "main",
+      },
       init_options = {
         usePlaceholders = true,
         completeUnimported = true,
         clangdFileStatus = true,
       },
-    })
-
-    local config_vhdl_ls = {
-      capabilities = capabilities,
-      filetypes = { "vhdl" },
-      root_dir = utilities.root_pattern("clash-manifest.json"),
     }
 
+    local esp32 = require("esp32")
+    local root_esp = { "sdkconfig" }
+    local root_pio = { "platformio.ini" }
+    local found_esp = vim.fs.find(root_esp, { upward = true })
+    local found_pio = vim.fs.find(root_pio, { upward = true })
+
+    if #found_esp > 0 and #found_pio == 0 then
+      noice.notify("Using ESP32 based CLANGD.", 0)
+      config_clangd = esp32.lsp_config()
+      config_clangd["root_dir"] = nil
+      local query_driver = "--query-driver="
+        .. "/home/niekv/.espressif/tools/xtensa-esp32s3-elf/esp-12.2.0_20230208/xtensa-esp32s3-elf/bin/xtensa-esp32s3-elf-gcc"
+      table.insert(config_clangd["cmd"], query_driver)
+    end
+
+    if #found_pio > 0 then
+      noice.notify("Using traditional CLANGD.", 0)
+      local ccpath = "."
+      local found_ccpaths = vim.fs.find("", { upward = true })
+      if #found_ccpaths ~= 0 then
+        ccpath = found_ccpaths[1]
+      end
+      table.insert(config_clangd["cmd"], "--compile-commands-dir=" .. ccpath)
+    end
+
+    vim.lsp.config("clangd", config_clangd)
+    vim.lsp.enable("clangd")
     vim.lsp.config("vtsls", vtsls_config)
-    vim.lsp.config("vhdl_ls", config_vhdl_ls)
     vim.lsp.config("clangd", config_clangd)
     vim.lsp.config("html", config_html)
     vim.lsp.config("intelephense", config_intelephense)
     vim.lsp.config("lua_ls", config_lua_ls)
     vim.lsp.config("emmet_language_server", config_emmet_language_server)
-    vim.lsp.config("graphql", config_graphql)
     vim.lsp.config("tailwindcss", config_tailwindcss)
     vim.lsp.config("svelte", config_svelte)
     vim.lsp.config("vue_ls", config_vue_ls)
 
     vim.lsp.enable("cmake")
     vim.lsp.enable("vtsls")
-    vim.lsp.enable("vhdl_ls")
-    vim.lsp.enable("clangd")
     vim.lsp.enable("html")
     vim.lsp.enable("intelephense")
     vim.lsp.enable("lua_ls")
     vim.lsp.enable("emmet_language_server")
-    vim.lsp.enable("graphql")
     vim.lsp.enable("tailwindcss")
     vim.lsp.enable("svelte")
     vim.lsp.enable("vue_ls")
