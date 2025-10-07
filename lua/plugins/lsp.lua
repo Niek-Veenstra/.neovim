@@ -27,6 +27,7 @@ return {
         exclude = {
           "rust_analyzer",
           "clangd",
+          "arduino_language_server",
         },
       },
       ensure_installed = {
@@ -300,8 +301,23 @@ return {
       table.insert(config_clangd["cmd"], "--compile-commands-dir=" .. ccpath)
     end
 
+    local config_arduino_ls = {
+      cmd = {
+        vim.fn.expand("~/.local/share/nvim/mason/bin/arduino-language-server"),
+        "-clangd",
+        vim.fn.expand("~/.local/share/nvim/mason/bin/clangd"),
+        "-cli-config",
+        "/home/niekv/.arduino15/arduino-cli.yaml",
+        "-fqbn",
+        "Heltec-esp32:esp32:heltec_wireless_tracker",
+        "-cli",
+        vim.fn.expand("/home/niekv/.local/bin/arduino-cli"),
+      },
+      capabilities = {},
+    }
+
     vim.lsp.config("clangd", config_clangd)
-    vim.lsp.enable("clangd")
+    vim.lsp.config("arduino-language-server", config_arduino_ls)
     vim.lsp.config("vtsls", vtsls_config)
     vim.lsp.config("clangd", config_clangd)
     vim.lsp.config("html", config_html)
@@ -312,6 +328,8 @@ return {
     vim.lsp.config("svelte", config_svelte)
     vim.lsp.config("vue_ls", config_vue_ls)
 
+    vim.lsp.enable("arduino_language_server")
+    vim.lsp.enable("clangd")
     vim.lsp.enable("cmake")
     vim.lsp.enable("vtsls")
     vim.lsp.enable("html")
