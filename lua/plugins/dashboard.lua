@@ -10,9 +10,9 @@ return {
     opts = function()
       local dashboard = require("alpha.themes.dashboard")
       dashboard.section.buttons.val = {
-        dashboard.button("f", " " .. " Find file", "<cmd> Telescope find_files <cr>"),
+        dashboard.button("f", " " .. " Find file", ":FzfLua files <cr>"),
         dashboard.button("n", " " .. " New file", [[<cmd> ene <BAR> startinsert <cr>]]),
-        dashboard.button("r", " " .. " Recent files", LazyVim.pick("oldfiles")),
+        dashboard.button("r", " " .. " Recent files", ":FzfLua files <cr>"),
         dashboard.button("g", " " .. " Find text", "<cmd> Telescope live_grep <cr>"),
         dashboard.button("c", " " .. " Config", LazyVim.pick.config_files()),
         dashboard.button("s", " " .. " Restore Session", [[<cmd> lua require("persistence").load() <cr>]]),
@@ -20,7 +20,6 @@ return {
         dashboard.button("l", "󰒲 " .. " Lazy", "<cmd> Lazy <cr>"),
         dashboard.button("q", " " .. " Quit", "<cmd> qa <cr>"),
         dashboard.button("u", "󰊳 " .. "Update property", "<cmd> Lazy update<CR>"),
-        dashboard.button("d", " " .. "dotfiles", "<cmd> Telescope dotfiles<CR>"),
       }
       for _, button in ipairs(dashboard.section.buttons.val) do
         button.opts.hl = "AlphaButtons"

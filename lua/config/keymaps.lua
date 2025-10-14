@@ -33,15 +33,10 @@ map(
 
 -- Finder
 
-map(
-  { "n" },
-  "<leader>ff",
-  ":Telescope find_files<CR>",
-  { noremap = true, silent = true, desc = "Opens CWD file finder." }
-)
-map("n", "<leader>fl", ":Telescope live_grep<CR>", { silent = true, desc = "RipGrep CWD content search." })
-map({ "n" }, "ff", ":Telescope find_files<CR>", { noremap = true, silent = true, desc = "Opens CWD file finder." })
-map("n", "fl", ":Telescope live_grep<CR>", { silent = true, desc = "RipGrep CWD content search." })
+map({ "n" }, "<leader>ff", ":FzfLua files<CR>", { noremap = true, silent = true, desc = "Opens CWD file finder." })
+map("n", "<leader>fl", ":FzfLua live_grep<CR>", { silent = true, desc = "RipGrep CWD content search." })
+map({ "n" }, "ff", ":FzfLua find_files<CR>", { noremap = true, silent = true, desc = "Opens CWD file finder." })
+map("n", "fl", ":FzfLua live_grep<CR>", { silent = true, desc = "RipGrep CWD content search." })
 
 -- End Finder
 

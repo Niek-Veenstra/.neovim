@@ -1,15 +1,32 @@
 return {
-  "git@github.com:neovim/nvim-lspconfig.git",
-  event = { "BufReadPre", "BufNewFile" },
-  dependencies = {
-    { "nvim-lua/plenary.nvim" },
-    { "mason-org/mason.nvim" },
-    { "mason-org/mason-lspconfig.nvim" },
+  "neovim/nvim-lspconfig",
+  event = "FileType",
+  opts = {
+    automatic_enable = {
+      exclude = {
+        "rust_analyzer",
+      },
+    },
+    automatic_setup = true,
+    automatic_installation = false,
+    handlers = nil,
+    ensure_installed = {
+      "html",
+      "cssls",
+      "svelte",
+      "lua_ls",
+      "vtsls",
+      "pyright",
+      "cmake",
+      "intelephense",
+      "emmet_language_server",
+      "vue_ls",
+      "tailwindcss",
+      "eslint",
+    },
   },
-  opts = {},
   config = function()
     local mason = require("mason")
-    local mason_lspconfig = require("mason-lspconfig")
     local capabilities = require("blink.cmp").get_lsp_capabilities({}, true)
 
     mason.setup({
@@ -21,41 +38,6 @@ return {
         },
       },
     })
-
-    mason_lspconfig.setup({
-      automatic_enable = {
-        exclude = {
-          "rust_analyzer",
-          "clangd",
-          "arduino_language_server",
-        },
-      },
-      ensure_installed = {
-        "html",
-        "cssls",
-        "svelte",
-        "lua_ls",
-        "vtsls",
-        "pyright",
-        "cmake",
-        "intelephense",
-        "emmet_language_server",
-        "vue_ls",
-        "tailwindcss",
-        "eslint",
-      },
-      automatic_installation = {
-        "html",
-        "cssls",
-        "svelte",
-        "lua_ls",
-        "cmake",
-        "pyright",
-        "clangd",
-        "intelephense",
-      },
-    })
-    local noice = require("noice")
 
     vim.api.nvim_create_autocmd("LspAttach", {
       group = vim.api.nvim_create_augroup("lsp-attach", {}),
