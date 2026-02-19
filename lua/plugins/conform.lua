@@ -5,27 +5,22 @@ return {
   event = { "BufReadPre", "BufLeave" },
   opts = {
     formatters_by_ft = {
-      php = { "php" },
-      js = { "prettier" },
       html = { "prettier" },
       vue = { "prettier" },
       typescript = { "prettier" },
+      typescriptreact = { "prettier" },
       javascript = { "prettier" },
       go = { "gofumpt", "goimports_reviser", "goline" },
+      c = { "clangf" },
       cpp = { "clangf" },
       h = { "clangf" },
-      rust = { "rformat" },
+      rust = { "rustfmt", lsp_format = "fallback" },
+    },
+    format_after_save = {
+      lsp_format = "fallback",
     },
     notify_on_error = true,
     formatters = {
-      rformat = {
-        command = "cargo",
-        args = {
-          "fmt",
-          "$FILENAME",
-        },
-        stdin = false,
-      },
       php = {
         command = "php-cs-fixer",
         args = {

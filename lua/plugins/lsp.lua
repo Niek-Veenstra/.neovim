@@ -28,6 +28,7 @@ return {
   config = function()
     local mason = require("mason")
     local capabilities = require("blink.cmp").get_lsp_capabilities({}, true)
+    local noice = require("noice")
 
     mason.setup({
       ui = {
@@ -134,6 +135,7 @@ return {
     }
     local config_tailwindcss = {
       capabilities = capabilities,
+      root_markers = { "package.json" },
     }
 
     local config_vue_ls = {
@@ -158,7 +160,6 @@ return {
             },
           }, { bufnr = context.bufnr }, function(_, r)
             local response_data = { { id, r.body } }
-            ---@diagnostic disable-next-line: param-type-mismatch
             client:notify("tsserver/response", response_data)
           end)
         end
@@ -265,16 +266,15 @@ return {
     local found_pio = vim.fs.find(root_pio, { upward = true })
 
     if #found_esp > 0 and #found_pio == 0 then
-      noice.notify("Using ESP32 based CLANGD.", 0)
       config_clangd = esp32.lsp_config()
       config_clangd["root_dir"] = nil
       local query_driver = "--query-driver="
         .. "/home/niekv/.espressif/tools/xtensa-esp32s3-elf/esp-12.2.0_20230208/xtensa-esp32s3-elf/bin/xtensa-esp32s3-elf-gcc"
       table.insert(config_clangd["cmd"], query_driver)
+      noice.notify("Using ESP32 based clangd", "notify")
     end
 
     if #found_pio > 0 then
-      noice.notify("Using traditional CLANGD.", 0)
       local ccpath = "."
       local found_ccpaths = vim.fs.find("", { upward = true })
       if #found_ccpaths ~= 0 then
@@ -309,17 +309,21 @@ return {
     vim.lsp.config("tailwindcss", config_tailwindcss)
     vim.lsp.config("svelte", config_svelte)
     vim.lsp.config("vue_ls", config_vue_ls)
+    vim.lsp.config("texlab", { rootDirectory = "/home/niekv/projects/svmsadis/documentation" })
 
     vim.lsp.enable("arduino_language_server")
     vim.lsp.enable("clangd")
     vim.lsp.enable("cmake")
     vim.lsp.enable("vtsls")
+    vim.lsp.enable("texlab")
     vim.lsp.enable("html")
     vim.lsp.enable("intelephense")
     vim.lsp.enable("lua_ls")
     vim.lsp.enable("emmet_language_server")
     vim.lsp.enable("tailwindcss")
     vim.lsp.enable("svelte")
+    vim.lsp.enable("bashls")
     vim.lsp.enable("vue_ls")
+    vim.lsp.enable("pyright")
   end,
 }

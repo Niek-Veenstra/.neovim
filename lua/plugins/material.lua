@@ -2,8 +2,11 @@ return {
   "marko-cerovac/material.nvim",
   opts = {
     styles = {
-      comments = { italic = true },
-      functions = { bold = true, italic = true },
+      comments = { italic = false, bold = false },
+      functions = { italic = true },
+    },
+    disable = {
+      colored_cursor = false,
     },
   },
 }

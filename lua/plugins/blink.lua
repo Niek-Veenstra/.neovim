@@ -17,14 +17,40 @@ return {
       use_nvim_cmp_as_default = false,
       nerd_font_variant = "mono",
     },
-    completion = {
-      trigger = {
-        show_on_trigger_character = true,
+    completion = { trigger = {
+      show_on_trigger_character = true,
+    } },
+    fuzzy = {
+      sorts = {
+        function(a, b)
+          if a.label == "log" and a.source_id == "snippets" then
+            return true
+          end
+          if b.label == "log" and b.source_id == "snippets" then
+            return false
+          end
+        end,
+        "score",
+        "sort_text",
+        "label",
       },
     },
 
     sources = {
-      default = { "lsp", "path", "snippets", "buffer" },
+      default = { "snippets", "lsp", "path", "buffer" },
+      providers = {
+        snippets = {
+          opts = {
+            friendly_snippets = true,
+            filter_snippets = function(ft, file)
+              if ft == "typescriptreact" then
+                return file:match("snippets/javascript/typescript.json") ~= nil
+              end
+              return true
+            end,
+          },
+        },
+      },
     },
   },
   opts_extend = { "sources.default" },
