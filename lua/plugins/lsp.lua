@@ -312,8 +312,9 @@ return {
     vim.lsp.config("texlab", { rootDirectory = "/home/niekv/projects/svmsadis/documentation" })
 
     vim.lsp.enable("arduino_language_server")
-    vim.lsp.enable("clangd")
+    vim.lsp.enable("gopls")
     vim.lsp.enable("cmake")
+    vim.lsp.enable("clangd")
     vim.lsp.enable("vtsls")
     vim.lsp.enable("texlab")
     vim.lsp.enable("html")
